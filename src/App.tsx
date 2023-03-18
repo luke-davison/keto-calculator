@@ -37,7 +37,7 @@ function App() {
             <div className="constants">
               <div className="meal-constant">
                 <Label>Meal weight (grams):</Label>
-                <Input value={String(weight)} type="number" onChange={(event, data) => setWeight(Number(data.value))}/>
+                <Input value={String(_weight)} type="number" onChange={(event, data) => setWeight(Number(data.value))}/>
               </div>
               <div className="ratio-constant">
                 <Label>Target ratio:</Label>
