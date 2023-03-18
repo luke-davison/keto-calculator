@@ -1,12 +1,11 @@
 import { SelectedFood } from "./App";
 import { Data } from "./data";
 
-export const getSumRatio = (foods: SelectedFood[]): number => {
+export const getSumFood = (foods: SelectedFood[]): SelectedFood => {
   const fat = foods.reduce((sum, food) => sum + food.fat * food.percentage, 0);
   const carbs = foods.reduce((sum, food) => sum + food.carbs * food.percentage, 0);
   const protein = foods.reduce((sum, food) => sum + food.protein * food.percentage, 0);
-
-  return fat / (carbs + protein);
+  return { code: "", name: "", fat, carbs, protein, percentage: 1 };
 }
 
 export const getRatio = (food: Data): number => {
@@ -20,9 +19,9 @@ export const getPercentage = (ratio: number, otherRatio: number, target: number)
 export enum RatioTypes {
   veryHigh = "Very high",
   high = "High",
-  low = "Low",
-  veryLow = "Very low",
-  veryVeryLow = "Very very low"
+  low = "Comparable",
+  veryLow = "Low",
+  veryVeryLow = "Very low"
 }
 
 export const getRatioType = (ratio: number, target: number): string => {
@@ -113,4 +112,33 @@ export const onAdjustSelectedFood = (selectedFood: SelectedFood, percentage: num
   selectedFood.percentage = percentage;
 
   return Array.from(selectedFoods);
+}
+
+export const calculateFoodWeight = (selectedFood: SelectedFood, selectedFoods: SelectedFood[], target: number, weight: number): number => {
+  const highestFoods = selectedFoods.filter(food => getRatio(food) > target)
+  const lowestFoods = selectedFoods.filter(food => getRatio(food) < target)
+
+  let highPercentage: number = 0;
+  let lowPercentage: number = 0;
+
+  if (highestFoods.length > 0 && lowestFoods.length === 0) {
+    highPercentage = 1
+  } else if (lowestFoods.length > 0 && highestFoods.length === 0) {
+    lowPercentage = 1
+  } else if (lowestFoods.length > 0 && highestFoods.length > 0) {
+    const lowFoodFat = lowestFoods.reduce((sum, food) => sum + food.fat * food.percentage, 0)
+    const lowFoodCarbsAndProtein = lowestFoods.reduce((sum, food) => sum + (food.carbs + food.protein) * food.percentage, 0)
+    const highFoodFat = highestFoods.reduce((sum, food) => sum + (food.fat * food.percentage), 0)
+    const highFoodCarbsAndProtein = highestFoods.reduce((sum, food) => sum + (food.carbs + food.protein) * food.percentage, 0)
+
+    lowPercentage = (highFoodFat - target*highFoodCarbsAndProtein) / ( target*lowFoodCarbsAndProtein - target*highFoodCarbsAndProtein - lowFoodFat + highFoodFat )
+    highPercentage = 1 - lowPercentage
+  }
+
+  const ratio = getRatio(selectedFood)
+  if (ratio > target) {
+    return round(selectedFood.percentage * highPercentage * weight, 0)
+  } else {
+    return round(selectedFood.percentage * lowPercentage * weight, 0)
+  }
 }

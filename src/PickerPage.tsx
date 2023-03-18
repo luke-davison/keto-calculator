@@ -25,9 +25,7 @@ export const PickerPage: React.FC<PickerPageProps> = props => {
 
   return (
     <div className="picker-page">
-      
       <h3>Add a new food</h3>
-
       <ReactSelect
         isSearchable
         options={options}

@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { PickerPage } from './PickerPage';
 import { Button, FluentProvider, Input, Label, teamsLightTheme } from '@fluentui/react-components';
 import { SelectedList } from './SelectedList';
-import { addSelectedFood, getPercentage, getRatio, getSumRatio, onAdjustSelectedFood } from './utils';
+import { addSelectedFood, onAdjustSelectedFood } from './utils';
+import { MealNutrition } from './MealNutrition';
 
 export interface SelectedFood extends Data {
   percentage: number;
@@ -13,26 +14,9 @@ export interface SelectedFood extends Data {
 function App() {
   const [selectedFoods, setSelectedFoods] = useState<SelectedFood[]>([])
   const [showingPickerPage, setShowingPickerPage] = useState<boolean>(false)
+  const [_weight, setWeight] = useState<number>(100)
   const target = 3
-  const weight = 100
-
-  const highestFoods = selectedFoods.filter(food => getRatio(food) > target)
-  const lowestFoods = selectedFoods.filter(food => getRatio(food) < target)
-
-  let highPercentage: number = 0;
-  let lowPercentage: number = 0;
-
-  if (highestFoods.length > 0 && lowestFoods.length === 0) {
-    highPercentage = 1
-  } else if (lowestFoods.length > 0 && highestFoods.length === 0) {
-    lowPercentage = 1
-  } else if (lowestFoods.length > 0 && highestFoods.length > 0) {
-    const highRatio = getSumRatio(highestFoods)
-    const lowRatio = getSumRatio(lowestFoods)
-  
-    highPercentage = getPercentage(highRatio, lowRatio, target)
-    lowPercentage = getPercentage(lowRatio, highRatio, target)
-  }
+  const weight = _weight || 100;
 
   return (
     <FluentProvider theme={teamsLightTheme}>
@@ -51,30 +35,23 @@ function App() {
         ) : (
           <div className="calculate-page">
             <div className="constants">
-              <div>
+              <div className="meal-constant">
+                <Label>Meal weight (grams):</Label>
+                <Input value={String(weight)} type="number" onChange={(event, data) => setWeight(Number(data.value))}/>
+              </div>
+              <div className="ratio-constant">
                 <Label>Target ratio:</Label>
                 <Input value={String(target)} type="number" disabled/>
               </div>
-              <div>
-                <Label>Meal weight:</Label>
-                <Input value={String(weight)} type="number" disabled/>
-                <span>g</span>
-              </div>
             </div>
-
-            <Button onClick={() => setShowingPickerPage(true)}>Add another food</Button>
+            <MealNutrition selectedFoods={selectedFoods} target={target} weight={weight}/>
+            <div className="add-food-buttom">
+              <Button onClick={() => setShowingPickerPage(true)}>Add more food</Button>
+            </div>
             <SelectedList
-              heading="High Ratio Foods"
-              selectedFoods={highestFoods}
+              selectedFoods={selectedFoods}
               target={target}
-              weight={highPercentage * weight}
-              onAdjust={(food, percentage) => setSelectedFoods(onAdjustSelectedFood(food, percentage, selectedFoods, target))}
-            />
-            <SelectedList
-              heading="Low Ratio Foods"
-              selectedFoods={lowestFoods}
-              target={target}
-              weight={lowPercentage * weight}
+              weight={weight}
               onAdjust={(food, percentage) => setSelectedFoods(onAdjustSelectedFood(food, percentage, selectedFoods, target))}
             />
           </div>
