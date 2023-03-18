@@ -1,3 +1,40 @@
-.data-input {
-  width: 400px;
+.App {
+  padding: 30px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.picker-page .submit-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.picker-page .selected-option {
+  margin: 20px 0;
+  padding: 10px 20px;
+  border-radius: 3px;
+  border: 1px solid lightgray;
+}
+
+.picker-page .selected-option-row:not(:last-child) {
+  padding-bottom: 15px;
+}
+
+.picker-page .selected-option-row {
+  display: flex;
+  justify-content: space-between;
+  min-height: 20px;
+}
+
+.picker-page .selected-option-name {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.selected-option-fat, .selected-option-carbs, .selected-option-protein {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 40px;
 }

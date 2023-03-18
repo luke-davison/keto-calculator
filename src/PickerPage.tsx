@@ -19,13 +19,15 @@ const options = dataArray.map(datum => ({
   return datumA.label > datumB.label ? 1 : -1
 })
 
-
 export const PickerPage: React.FC<PickerPageProps> = props => {
   const { onAdd, onClose, target } = props;
   const [selectedFood, setSelectedFood] = useState<Data | undefined>()
 
   return (
     <div className="picker-page">
+      
+      <h3>Add a new food</h3>
+
       <ReactSelect
         isSearchable
         options={options}
@@ -56,9 +58,9 @@ export const PickerPage: React.FC<PickerPageProps> = props => {
           }
         }}
       />
-      
+
       <PickerPageSelectedFood selectedFood={selectedFood} target={target}/>
-      
+
       <div className="submit-buttons">
         <Button
           appearance="primary"
