@@ -1,8 +1,9 @@
 import { Button } from "@fluentui/react-components";
 import { useState } from "react";
 import ReactSelect from "react-select";
-import data, { Data } from "./data";
+import allData, { Data } from "./data";
 import { PickerPageSelectedFood } from "./PickerPageSelectedOption";
+import { getColor, getRatio } from "./utils";
 
 interface PickerPageProps {
   onAdd: (food: Data | undefined) => void;
@@ -10,7 +11,7 @@ interface PickerPageProps {
   target: number;
 }
 
-const dataArray = Array.from(data.values())
+const dataArray = Array.from(allData.values())
 const options = dataArray.map(datum => ({
   value: datum.code,
   label: datum.name
@@ -32,9 +33,26 @@ export const PickerPage: React.FC<PickerPageProps> = props => {
         value={null}
         onChange={option => {
           if (option) {
-            setSelectedFood(data.get(option.value))
+            setSelectedFood(allData.get(option.value))
           } else {
             setSelectedFood(undefined)
+          }
+        }}
+        styles={{
+          option: (styles, { data }) => {
+            if (!data) {
+              return styles
+            }
+
+            const datum = allData.get(data.value)
+            if (!datum) {
+              return styles
+            }
+            
+            return {
+              ...styles,
+              backgroundColor: getColor(datum, target)
+            }
           }
         }}
       />

@@ -1,14 +1,12 @@
 import { SelectedFood } from "./App";
 import { Data } from "./data";
 
-export const getIsPossible = (foods: SelectedFood[], target: number): boolean => {
-  return foods.some(food => getRatio(food) > target)
-    && foods.some(food => getRatio(food) < target)
-}
+export const getSumRatio = (foods: SelectedFood[]): number => {
+  const fat = foods.reduce((sum, food) => sum + food.fat * food.percentage, 0);
+  const carbs = foods.reduce((sum, food) => sum + food.carbs * food.percentage, 0);
+  const protein = foods.reduce((sum, food) => sum + food.protein * food.percentage, 0);
 
-export interface RatioRange {
-  min: number,
-  max: number
+  return fat / (carbs + protein);
 }
 
 export const getRatio = (food: Data): number => {
@@ -19,46 +17,12 @@ export const getPercentage = (ratio: number, otherRatio: number, target: number)
   return Math.abs(otherRatio - target) / (Math.abs(otherRatio - ratio));
 }
 
-export const getRatioRange = (food: SelectedFood, foods: SelectedFood[], target: number): RatioRange => {
-  const ratio = getRatio(food)
-
-  const underTargetFood = foods.filter(otherFood => otherFood.code !== food.code && getRatio(otherFood) < target)
-    .sort((foodA, foodB) => getRatio(foodA) - getRatio(foodB))
-  const overTargetFood = foods.filter(otherFood => otherFood.code !== food.code && getRatio(otherFood) > target)
-    .sort((foodA, foodB) => getRatio(foodA) - getRatio(foodB))
-
-  let min = 0, max = 1;
-
-  if (ratio > target) {
-    const lowestUnderFoodRatio = getRatio(underTargetFood[0]);
-    max = getPercentage(ratio, lowestUnderFoodRatio, target)
-    
-    if (overTargetFood.length > 0) {
-      min = 0
-    } else {
-      const highestUnderFoodRatio = getRatio(underTargetFood[underTargetFood.length - 1]);
-      min = getPercentage(ratio, highestUnderFoodRatio, target)
-    }
-  } else {
-    const highestOverFoodRatio = getRatio(overTargetFood[overTargetFood.length - 1]);
-    max = getPercentage(ratio, highestOverFoodRatio, target)
-    
-    if (underTargetFood.length > 0) {
-      min = 0
-    } else {
-      const lowestOverFoodRatio = getRatio(overTargetFood[0]);
-      min = getPercentage(ratio, lowestOverFoodRatio, target)
-    }
-  }
-
-  return { min, max }
-}
-
 export enum RatioTypes {
   veryHigh = "Very high",
   high = "High",
   low = "Low",
-  veryLow = "Very low"
+  veryLow = "Very low",
+  veryVeryLow = "Very very low"
 }
 
 export const getRatioType = (ratio: number, target: number): string => {
@@ -74,7 +38,25 @@ export const getRatioType = (ratio: number, target: number): string => {
     return RatioTypes.low
   }
 
-  return RatioTypes.veryLow
+  if (ratio > 1 / target) {
+    return RatioTypes.veryLow
+  }
+
+  return RatioTypes.veryVeryLow
+}
+
+export const getColor = (data: Data, target: number): string => {
+  const ratio = getRatio(data)
+  const type = getRatioType(ratio, target)
+
+  switch (type) {
+    case RatioTypes.veryHigh: return "#C7DAEB";
+    case RatioTypes.high: return "#D1E6D6";
+    case RatioTypes.low: return "#F2EFD5";
+    case RatioTypes.veryLow: return "#F0E0D1";
+    case RatioTypes.veryVeryLow: return "#F6CCD5";
+    default: return "white"
+  }
 }
 
 export const round = (value: number, power: number): number => {
@@ -94,11 +76,12 @@ export const addSelectedFood = (datum: Data, selectedFoods: SelectedFood[], targ
 
   const numOfFoods = otherFoods.length + 1;
 
+  otherFoods.forEach(food => {
+    food.percentage = food.percentage * (numOfFoods - 1) / numOfFoods
+  })
+
   return [
-    ...selectedFoods.map(food => ({
-      ...food,
-      percentage: food.percentage * (numOfFoods - 1) / numOfFoods
-    })),
+    ...selectedFoods,
     { ...datum, percentage: 1 / numOfFoods }
   ]
 }
@@ -115,16 +98,15 @@ export const onAdjustSelectedFood = (selectedFood: SelectedFood, percentage: num
     return isHigh ? ratio > target : ratio < target
   })
 
-  const difference = selectedFood.percentage - percentage;
-  const numOfFoods = otherFoods.length + 1;
+  const sumOfOther = otherFoods.reduce((sum, food) => sum + food.percentage, 0)
 
-  if (otherFoods.every(food => round(food.percentage, 4) === 0)) {
+  if (sumOfOther === 0) {
     otherFoods.forEach(food => {
-      food.percentage = difference / (numOfFoods - 1)
+      food.percentage = (1 - percentage) / otherFoods.length
     })
   } else {
     otherFoods.forEach(food => {
-      food.percentage += difference / (numOfFoods - 1)
+      food.percentage = (1 - percentage) * (food.percentage / sumOfOther)
     })
   }
 
