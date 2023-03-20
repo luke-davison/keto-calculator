@@ -1,4 +1,4 @@
-import { Button } from "@fluentui/react-components";
+import { Button, Label, Radio, RadioGroup } from "@fluentui/react-components";
 import { useState } from "react";
 import ReactSelect from "react-select";
 import allData, { Data } from "./data";
@@ -22,10 +22,20 @@ const options = dataArray.map(datum => ({
 export const PickerPage: React.FC<PickerPageProps> = props => {
   const { onAdd, onClose, target } = props;
   const [selectedFood, setSelectedFood] = useState<Data | undefined>()
+  const [addDefault, setAddDefault] = useState<boolean>(true)
 
   return (
     <div className="picker-page">
       <h3>Add a new food</h3>
+      <RadioGroup
+        className="food-picker-type"
+        layout="horizontal"
+        value={addDefault ? "default" : "custom"}
+        onChange={(event, data) => setAddDefault(data.value === "default")}
+      >
+        <Radio value="default" label="Existing food"/>
+        <Radio value="custom" label="New food"/>
+      </RadioGroup>
       <ReactSelect
         isSearchable
         options={options}
