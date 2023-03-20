@@ -36,7 +36,7 @@ export const SelectedList: React.FC<SelectedListProps> = props => {
             </div>
           )
         })}
-        { highestFoods.length == 0 && (
+        { highestFoods.length === 0 && (
           <div className="none-selected">
             None selected
           </div>
@@ -61,7 +61,7 @@ export const SelectedList: React.FC<SelectedListProps> = props => {
             </div>
           )
         })}
-        { lowestFoods.length == 0 && (
+        { lowestFoods.length === 0 && (
           <div className="none-selected">
             None selected
           </div>

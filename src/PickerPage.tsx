@@ -3,7 +3,7 @@ import { useState } from "react";
 import ReactSelect from "react-select";
 import allData, { Data } from "./data";
 import { PickerPageSelectedFood } from "./PickerPageSelectedOption";
-import { getColor, getRatio } from "./utils";
+import { getColor } from "./utils";
 
 interface PickerPageProps {
   onAdd: (food: Data | undefined) => void;
