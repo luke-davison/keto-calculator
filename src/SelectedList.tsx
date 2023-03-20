@@ -13,7 +13,7 @@ export const SelectedList: React.FC<SelectedListProps> = props => {
   const { onAdjust, selectedFoods, target, weight } = props;
 
   const highestFoods = selectedFoods.filter(food => getRatio(food) > target)
-  const lowestFoods = selectedFoods.filter(food => getRatio(food) < target)
+  const lowestFoods = selectedFoods.filter(food => getRatio(food) <= target)
 
   return (
     <>

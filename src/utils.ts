@@ -66,7 +66,7 @@ export const addSelectedFood = (datum: Data, selectedFoods: SelectedFood[], targ
   const isHigh = getRatio(datum) > target;
   const otherFoods = selectedFoods.filter(food => {
     const ratio = getRatio(food)
-    return isHigh ? ratio > target : ratio < target
+    return isHigh ? ratio > target : ratio <= target
   })
 
   if (otherFoods.length === 0) {
@@ -94,7 +94,7 @@ export const onAdjustSelectedFood = (selectedFood: SelectedFood, percentage: num
     }
 
     const ratio = getRatio(food)
-    return isHigh ? ratio > target : ratio < target
+    return isHigh ? ratio > target : ratio <= target
   })
 
   const sumOfOther = otherFoods.reduce((sum, food) => sum + food.percentage, 0)
@@ -116,7 +116,7 @@ export const onAdjustSelectedFood = (selectedFood: SelectedFood, percentage: num
 
 export const calculateFoodWeight = (selectedFood: SelectedFood, selectedFoods: SelectedFood[], target: number, weight: number): number => {
   const highestFoods = selectedFoods.filter(food => getRatio(food) > target)
-  const lowestFoods = selectedFoods.filter(food => getRatio(food) < target)
+  const lowestFoods = selectedFoods.filter(food => getRatio(food) <= target)
 
   let highPercentage: number = 0;
   let lowPercentage: number = 0;
@@ -141,4 +141,25 @@ export const calculateFoodWeight = (selectedFood: SelectedFood, selectedFoods: S
   } else {
     return round(selectedFood.percentage * lowPercentage * weight, 0)
   }
+}
+
+export const updateFoodOnTargetChange = (selectedFoods: SelectedFood[], target: number, oldTarget: number): SelectedFood[] | undefined => {
+  const highestFoodsNew = selectedFoods.filter(food => getRatio(food) > target)
+  const highestFoodsOld = selectedFoods.filter(food => getRatio(food) > oldTarget)
+
+  if (highestFoodsNew.length === highestFoodsOld.length) {
+    return 
+  }
+
+  const lowestFoodsNew = selectedFoods.filter(food => getRatio(food) <= target)
+
+  highestFoodsNew.forEach(food => {
+    food.percentage = 1 / highestFoodsNew.length
+  })
+
+  lowestFoodsNew.forEach(food => {
+    food.percentage = 1 / lowestFoodsNew.length
+  })
+
+  return Array.from(selectedFoods)
 }
