@@ -60,17 +60,17 @@ export const CustomFoodForm: React.FC<CustomFoodFormProps> = props => {
       <div className="custom-form-row">
         <div className="custom-form-cell">
           <Label htmlFor={Fields.fat}>Fat</Label>
-          <Input id={Fields.fat} onChange={(event, data) => onChange(Fields.fat, data.value)}/>
+          <Input id={Fields.fat} onChange={(event, data) => onChange(Fields.fat, data.value)} type="number"/>
         </div>
 
         <div className="custom-form-cell">
           <Label htmlFor={Fields.protein}>Protein</Label>
-          <Input id={Fields.protein} onChange={(event, data) => onChange(Fields.protein, data.value)}/>
+          <Input id={Fields.protein} onChange={(event, data) => onChange(Fields.protein, data.value)} type="number"/>
         </div>
 
         <div className="custom-form-cell">
           <Label htmlFor={Fields.carbs}>Carbs</Label>
-          <Input id={Fields.carbs} onChange={(event, data) => onChange(Fields.carbs, data.value)}/>
+          <Input id={Fields.carbs} onChange={(event, data) => onChange(Fields.carbs, data.value)} type="number"/>
         </div>
       </div>
     </div>
