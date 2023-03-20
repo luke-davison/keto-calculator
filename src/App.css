@@ -80,3 +80,30 @@
 .food-picker-type {
   margin-bottom: 20px;
 }
+
+.custom-form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.custom-form-row label {
+  margin-right: 10px;
+}
+
+.custom-form-cell {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.custom-form-cell input#name {
+  width: 250px;
+}
+
+.custom-form-cell input#carbs, .custom-form-cell input#fat, .custom-form-cell input#protein {
+  width: 50px;
+}

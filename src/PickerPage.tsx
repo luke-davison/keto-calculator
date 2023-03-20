@@ -1,23 +1,14 @@
-import { Button, Label, Radio, RadioGroup } from "@fluentui/react-components";
+import { Button, Radio, RadioGroup } from "@fluentui/react-components";
 import { useState } from "react";
-import ReactSelect from "react-select";
-import allData, { Data } from "./data";
-import { PickerPageSelectedFood } from "./PickerPageSelectedOption";
-import { getColor } from "./utils";
+import { CustomFoodForm } from "./CustomFoodForm";
+import { Data } from "./data";
+import { DefaultFoodForm } from "./DefaultFoodForm";
 
 interface PickerPageProps {
   onAdd: (food: Data | undefined) => void;
   onClose: () => void;
   target: number;
 }
-
-const dataArray = Array.from(allData.values())
-const options = dataArray.map(datum => ({
-  value: datum.code,
-  label: datum.name
-})).sort((datumA, datumB) => {
-  return datumA.label > datumB.label ? 1 : -1
-})
 
 export const PickerPage: React.FC<PickerPageProps> = props => {
   const { onAdd, onClose, target } = props;
@@ -31,43 +22,25 @@ export const PickerPage: React.FC<PickerPageProps> = props => {
         className="food-picker-type"
         layout="horizontal"
         value={addDefault ? "default" : "custom"}
-        onChange={(event, data) => setAddDefault(data.value === "default")}
+        onChange={(event, data) => {
+          setAddDefault(data.value === "default")
+          setSelectedFood(undefined)
+        }}
       >
         <Radio value="default" label="Existing food"/>
         <Radio value="custom" label="New food"/>
       </RadioGroup>
-      <ReactSelect
-        isSearchable
-        options={options}
-        isClearable
-        value={null}
-        onChange={option => {
-          if (option) {
-            setSelectedFood(allData.get(option.value))
-          } else {
-            setSelectedFood(undefined)
-          }
-        }}
-        styles={{
-          option: (styles, { data }) => {
-            if (!data) {
-              return styles
-            }
-
-            const datum = allData.get(data.value)
-            if (!datum) {
-              return styles
-            }
-            
-            return {
-              ...styles,
-              backgroundColor: getColor(datum, target)
-            }
-          }
-        }}
-      />
-
-      <PickerPageSelectedFood selectedFood={selectedFood} target={target}/>
+      { addDefault ? (
+        <DefaultFoodForm
+          onSelect={setSelectedFood}
+          target={target}
+        />
+      ) : (
+        <CustomFoodForm
+          onSelect={setSelectedFood}
+          target={target}
+        />
+      )}
 
       <div className="submit-buttons">
         <Button
