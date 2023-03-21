@@ -163,3 +163,21 @@ export const updateFoodOnTargetChange = (selectedFoods: SelectedFood[], target: 
 
   return Array.from(selectedFoods)
 }
+
+export const onRemoveSelectedFood = (selectedFood: SelectedFood, selectedFoods: SelectedFood[], target: number): SelectedFood[] => {
+  const filteredFoods = selectedFoods.filter(food => food.code !== selectedFood.code)
+  const isHigh = getRatio(selectedFood) > target;
+  if (isHigh) {
+    const highFoods = filteredFoods.filter(food => getRatio(food) > target);
+    highFoods.forEach(food => {
+      food.percentage += selectedFood.percentage * food.percentage / (1 - selectedFood.percentage)
+    })
+  } else {
+    const lowFoods = filteredFoods.filter(food => getRatio(food) <= target);
+    lowFoods.forEach(food => {
+      food.percentage += selectedFood.percentage * food.percentage / (1 - selectedFood.percentage)
+    })
+  }
+
+  return filteredFoods
+}

@@ -3,7 +3,7 @@ import { Data } from './data';
 import { useState } from 'react';
 import { PickerPage } from './PickerPage';
 import { Button, FluentProvider, Input, InputProps, Label, teamsLightTheme } from '@fluentui/react-components';
-import { addSelectedFood, onAdjustSelectedFood, updateFoodOnTargetChange } from './utils';
+import { addSelectedFood, onAdjustSelectedFood, onRemoveSelectedFood, updateFoodOnTargetChange } from './utils';
 import { MealNutrition } from './MealNutrition';
 import { SelectedLists } from './SelectedLists';
 
@@ -67,7 +67,7 @@ function App() {
               target={target}
               weight={weight}
               onAdjust={(food, percentage) => setSelectedFoods(onAdjustSelectedFood(food, percentage, selectedFoods, target))}
-              onRemove={(food) => setSelectedFoods(selectedFoods.filter(otherFood => otherFood.code !== food.code))}
+              onRemove={(food) => setSelectedFoods(onRemoveSelectedFood(food, selectedFoods, target))}
             />
           </div>
         )}
