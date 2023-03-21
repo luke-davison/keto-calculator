@@ -73,7 +73,13 @@
   align-items: center;
 }
 
+.selected-list-item {
+  display: flex;
+  flex-direction: row;
+}
+
 .selected-list-item-name {
+  margin-left: 10px;
   margin-right: 10px;
 }
 
@@ -106,4 +112,24 @@
 
 .custom-form-cell input#carbs, .custom-form-cell input#fat, .custom-form-cell input#protein {
   width: 50px;
+}
+
+.selected-list-heading {
+  margin-left: 20px;
+  margin-top: 1.8em;
+  margin-bottom: 1.5em;
+}
+
+.weight-slider input {
+  width: 200px;
+}
+
+.selected-list-item-stats {
+  font-size: 12px;
+}
+
+.selected-list-item-remove {
+  margin-right: 15px;
+  cursor: pointer;
+  color: red;
 }

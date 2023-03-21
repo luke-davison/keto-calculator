@@ -3,9 +3,9 @@ import { Data } from './data';
 import { useState } from 'react';
 import { PickerPage } from './PickerPage';
 import { Button, FluentProvider, Input, InputProps, Label, teamsLightTheme } from '@fluentui/react-components';
-import { SelectedList } from './SelectedList';
 import { addSelectedFood, onAdjustSelectedFood, updateFoodOnTargetChange } from './utils';
 import { MealNutrition } from './MealNutrition';
+import { SelectedLists } from './SelectedLists';
 
 export interface SelectedFood extends Data {
   percentage: number;
@@ -61,11 +61,12 @@ function App() {
             <div className="add-food-buttom">
               <Button onClick={() => setShowingPickerPage(true)}>Add more food</Button>
             </div>
-            <SelectedList
+            <SelectedLists
               selectedFoods={selectedFoods}
               target={target}
               weight={weight}
               onAdjust={(food, percentage) => setSelectedFoods(onAdjustSelectedFood(food, percentage, selectedFoods, target))}
+              onRemove={(food) => setSelectedFoods(selectedFoods.filter(otherFood => otherFood.code !== food.code))}
             />
           </div>
         )}
