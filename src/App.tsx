@@ -43,6 +43,7 @@ function App() {
               }
             }}
             onClose={() => setShowingPickerPage(false)}
+            selectedFoods={selectedFoods}
             target={target}
           />
         ) : (

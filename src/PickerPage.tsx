@@ -1,5 +1,6 @@
 import { Button, Radio, RadioGroup } from "@fluentui/react-components";
 import { useState } from "react";
+import { SelectedFood } from "./App";
 import { CustomFoodForm } from "./CustomFoodForm";
 import { Data } from "./data";
 import { DefaultFoodForm } from "./DefaultFoodForm";
@@ -8,10 +9,11 @@ interface PickerPageProps {
   onAdd: (food: Data | undefined) => void;
   onClose: () => void;
   target: number;
+  selectedFoods: SelectedFood[];
 }
 
 export const PickerPage: React.FC<PickerPageProps> = props => {
-  const { onAdd, onClose, target } = props;
+  const { onAdd, onClose, selectedFoods, target } = props;
   const [selectedFood, setSelectedFood] = useState<Data | undefined>()
   const [addDefault, setAddDefault] = useState<boolean>(true)
 
@@ -34,6 +36,7 @@ export const PickerPage: React.FC<PickerPageProps> = props => {
         <DefaultFoodForm
           onSelect={setSelectedFood}
           target={target}
+          selectedFoods={selectedFoods}
         />
       ) : (
         <CustomFoodForm

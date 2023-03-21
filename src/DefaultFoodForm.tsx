@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ReactSelect from "react-select";
+import { SelectedFood } from "./App";
 import allData, { Data } from "./data";
 import { PickerPageSelectedFood } from "./PickerPageSelectedOption";
 import { getColor } from "./utils";
 
 interface DefaultFoodFormProps {
   onSelect: (food: Data | undefined) => void;
+  selectedFoods: SelectedFood[];
   target: number;
 }
 
 const dataArray = Array.from(allData.values())
-const options = dataArray.map(datum => ({
+const _options = dataArray.map(datum => ({
   value: datum.code,
   label: datum.name
 })).sort((datumA, datumB) => {
@@ -18,7 +20,7 @@ const options = dataArray.map(datum => ({
 })
 
 export const DefaultFoodForm: React.FC<DefaultFoodFormProps> = props => {
-  const { onSelect, target } = props;
+  const { onSelect, target, selectedFoods } = props;
   const [selectedFood, setSelectedFood] = useState<Data | undefined>()
 
   const _onSelect = (food: Data | undefined) => {
@@ -26,11 +28,15 @@ export const DefaultFoodForm: React.FC<DefaultFoodFormProps> = props => {
     onSelect(food)
   }
 
+  const options = useRef(_options.filter(option => {
+    return selectedFoods.every(food => food.code !== option.value)
+  }))
+
   return (
     <div className="default-picker-page">
       <ReactSelect
         isSearchable
-        options={options}
+        options={options.current}
         isClearable
         value={null}
         onChange={option => {
