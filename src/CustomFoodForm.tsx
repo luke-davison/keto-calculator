@@ -1,13 +1,10 @@
 import { Input, Label } from "@fluentui/react-components";
 import { useEffect, useState } from "react";
-import allData, { Data } from "./data";
+import { Data } from "./data";
 
 interface CustomFoodFormProps {
   onSelect: (food: Data | undefined) => void;
-  target: number;
 }
-
-const dataArray = Array.from(allData.values())
 
 enum Fields {
   name = "name",
@@ -17,7 +14,7 @@ enum Fields {
 }
 
 export const CustomFoodForm: React.FC<CustomFoodFormProps> = props => {
-  const { onSelect, target } = props;
+  const { onSelect } = props;
 
   const [name, setName] = useState<string>("")
   const [carbs, setCarbs] = useState<string>("")

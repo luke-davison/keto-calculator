@@ -1,6 +1,6 @@
 import { Slider } from "@fluentui/react-components";
 import { SelectedFood } from "./App"
-import { calculateFoodWeight, getRatio } from "./utils";
+import { calculateFoodWeight } from "./utils";
 
 interface SelectedListProps {
   heading: string

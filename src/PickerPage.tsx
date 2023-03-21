@@ -39,10 +39,7 @@ export const PickerPage: React.FC<PickerPageProps> = props => {
           selectedFoods={selectedFoods}
         />
       ) : (
-        <CustomFoodForm
-          onSelect={setSelectedFood}
-          target={target}
-        />
+        <CustomFoodForm onSelect={setSelectedFood}/>
       )}
 
       <div className="submit-buttons">
