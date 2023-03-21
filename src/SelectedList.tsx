@@ -32,12 +32,14 @@ export const SelectedList: React.FC<SelectedListProps> = props => {
                 <b className="selected-list-item-weight">
                   {calculateFoodWeight(selectedFood, selectedFoods, target, weight)}g
                 </b>
-                <span className="selected-list-item-name">
-                  {selectedFood.name}
-                </span>
-                <span className="selected-list-item-stats">
-                  {`${selectedFood.fat} / ${selectedFood.protein} / ${selectedFood.carbs}`}
-                </span>
+                <div>
+                  <div className="selected-list-item-name">
+                    {selectedFood.name}
+                  </div>
+                  <div className="selected-list-item-stats">
+                    {`${selectedFood.fat} / ${selectedFood.protein} / ${selectedFood.carbs}`}
+                  </div>
+                </div>
               </div>
               {foods.length > 1 && (
                 <Slider

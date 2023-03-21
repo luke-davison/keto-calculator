@@ -78,11 +78,6 @@
   flex-direction: row;
 }
 
-.selected-list-item-name {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
 .food-picker-type {
   margin-bottom: 20px;
 }
@@ -121,7 +116,7 @@
 }
 
 .weight-slider input {
-  width: 200px;
+  width: 250px;
 }
 
 .selected-list-item-stats {
@@ -132,4 +127,20 @@
   margin-right: 15px;
   cursor: pointer;
   color: red;
+}
+
+.selected-list-item-name {
+  flex-grow: 1;
+}
+
+.selected-list-item-text {
+  display: flex;
+}
+
+.selected-list-item-stats {
+  flex-shrink: 0;
+}
+
+.selected-list-item-weight {
+  margin-right: 10px;
 }
