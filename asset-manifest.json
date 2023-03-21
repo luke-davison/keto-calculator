@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/keto-calculator/static/css/main.a3602213.css",
-    "main.js": "/keto-calculator/static/js/main.fc3dd701.js",
+    "main.css": "/keto-calculator/static/css/main.e9f0796e.css",
+    "main.js": "/keto-calculator/static/js/main.14c441fe.js",
     "static/js/787.8f0e7150.chunk.js": "/keto-calculator/static/js/787.8f0e7150.chunk.js",
     "index.html": "/keto-calculator/index.html",
-    "main.a3602213.css.map": "/keto-calculator/static/css/main.a3602213.css.map",
-    "main.fc3dd701.js.map": "/keto-calculator/static/js/main.fc3dd701.js.map",
+    "main.e9f0796e.css.map": "/keto-calculator/static/css/main.e9f0796e.css.map",
+    "main.14c441fe.js.map": "/keto-calculator/static/js/main.14c441fe.js.map",
     "787.8f0e7150.chunk.js.map": "/keto-calculator/static/js/787.8f0e7150.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a3602213.css",
-    "static/js/main.fc3dd701.js"
+    "static/css/main.e9f0796e.css",
+    "static/js/main.14c441fe.js"
   ]
 }
