@@ -4,9 +4,10 @@ import { SelectedFood } from "./App";
 import { CustomFoodForm } from "./CustomFoodForm";
 import { Data } from "./data";
 import { DefaultFoodForm } from "./DefaultFoodForm";
+import { addToLocalStorage } from "./utils";
 
 interface PickerPageProps {
-  onAdd: (food: Data | undefined) => void;
+  onAdd: (food: Data) => void;
   onClose: () => void;
   target: number;
   selectedFoods: SelectedFood[];
@@ -16,6 +17,14 @@ export const PickerPage: React.FC<PickerPageProps> = props => {
   const { onAdd, onClose, selectedFoods, target } = props;
   const [selectedFood, setSelectedFood] = useState<Data | undefined>()
   const [addDefault, setAddDefault] = useState<boolean>(true)
+
+  const _onAdd = (food: Data) => {
+    if (!addDefault && food) {
+      console.log('adding')
+      addToLocalStorage(food)
+    }
+    onAdd(food)
+  }
 
   return (
     <div className="picker-page">
@@ -48,7 +57,7 @@ export const PickerPage: React.FC<PickerPageProps> = props => {
           disabled={!selectedFood}
           onClick={() => {
             if (selectedFood) {
-              onAdd(selectedFood);
+              _onAdd(selectedFood);
             }
             onClose();
           }}
@@ -61,5 +70,4 @@ export const PickerPage: React.FC<PickerPageProps> = props => {
       </div>
     </div>
   )
-
 }

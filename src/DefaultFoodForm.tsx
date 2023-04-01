@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import ReactSelect from "react-select";
 import { SelectedFood } from "./App";
-import allData, { Data } from "./data";
+import { Data, getData } from "./data";
 import { PickerPageSelectedFood } from "./PickerPageSelectedOption";
 import { getColor } from "./utils";
 
@@ -11,13 +11,17 @@ interface DefaultFoodFormProps {
   target: number;
 }
 
+const allData = getData()
+
 const dataArray = Array.from(allData.values())
-const _options = dataArray.map(datum => ({
+const _options = dataArray.sort((datumA, datumB) => {
+  if (datumA.custom && !datumB.custom) return -1
+  if (datumB.custom && !datumA.custom) return 1
+  return datumA.name > datumB.name ? 1 : -1
+}).map(datum => ({
   value: datum.code,
   label: datum.name
-})).sort((datumA, datumB) => {
-  return datumA.label > datumB.label ? 1 : -1
-})
+}))
 
 export const DefaultFoodForm: React.FC<DefaultFoodFormProps> = props => {
   const { onSelect, target, selectedFoods } = props;

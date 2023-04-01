@@ -1,4 +1,5 @@
 import { rawData } from "./rawdata";
+import { loadFromLocalStorage } from "./utils";
 
 export interface Data {
   code: string;
@@ -6,9 +7,11 @@ export interface Data {
   protein: number;
   fat: number;
   carbs: number;
+  custom?: boolean;
 }
 
-const splitRawData = rawData.split("|")
+export function getData(): Map<string, Data> {
+  const splitRawData = rawData.split("|")
 const data: Map<string, Data> = new Map()
 for (let index = 0; index < splitRawData.length - 1; index += 5) {
   const slice = splitRawData.slice(index, index + 5)
@@ -27,5 +30,7 @@ for (let index = 0; index < splitRawData.length - 1; index += 5) {
   }
 }
 
-export default data
+loadFromLocalStorage(data);
 
+return data
+}

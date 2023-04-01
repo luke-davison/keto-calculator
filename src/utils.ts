@@ -1,5 +1,5 @@
 import { SelectedFood } from "./App";
-import { Data } from "./data";
+import { Data, getData } from "./data";
 
 export const getSumFood = (foods: SelectedFood[]): SelectedFood => {
   const fat = foods.reduce((sum, food) => sum + food.fat * food.percentage, 0);
@@ -180,4 +180,42 @@ export const onRemoveSelectedFood = (selectedFood: SelectedFood, selectedFoods: 
   }
 
   return filteredFoods
+}
+
+const CUSTOM_FOODS = "customFoods"
+let savedFoods: Data[] | undefined
+
+export const loadFromLocalStorage = (data: Map<string, Data>) => {
+  console.log('loading')
+  const foodsString = localStorage.getItem(CUSTOM_FOODS)
+  if (foodsString) {
+    try {
+      console.log('str', foodsString)
+      const foods = JSON.parse(foodsString) as Data[]
+      foods.forEach(food => {
+        console.log('setting', food)
+        data.set(food.code, { ...food, custom: true })
+      })
+      savedFoods = foods
+    } catch {}
+  }
+}
+
+export const addToLocalStorage = (food: Data) => {
+  if (!savedFoods) {
+    savedFoods = []
+  }
+
+  savedFoods.unshift(food)
+  console.log('setting', food)
+  localStorage.setItem(CUSTOM_FOODS, JSON.stringify(savedFoods))
+}
+
+export const removeFromLocalStorage = (food: Data) => {
+  if (!savedFoods) {
+    return
+  }
+
+  savedFoods = savedFoods.filter(savedFood => savedFood.code !== food.code)
+  localStorage.setItem(CUSTOM_FOODS, JSON.stringify(savedFoods))
 }
