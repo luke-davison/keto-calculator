@@ -144,3 +144,14 @@
 .selected-list-item-weight {
   margin-right: 10px;
 }
+
+@media only screen and (max-width: 600px) {
+  .custom-form-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .custom-form-row label {
+    width: 46px;
+  }
+}
